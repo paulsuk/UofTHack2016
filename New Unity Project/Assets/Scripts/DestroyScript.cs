@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class DestroyScript : MonoBehaviour {
-
-	private float destroyTime = 7.0f;
+	
+	private float destroyTime = 10f;
 	// Use this for initialization
 	void Start () {
 		Destroy (gameObject, destroyTime);

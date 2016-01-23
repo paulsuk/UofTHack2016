@@ -21,11 +21,12 @@ public class playerMovement : MonoBehaviour {
 	private float currSpeed = 0;
 	private bool isGround;
 	private bool isJump;
-
+	private Animator myAnim;
 
 	// Use this for initialization
 	void Start () {
 		myRigidBody = GetComponent<Rigidbody2D> ();
+		myAnim = GetComponent<Animator> ();
 	}
 		
 	// Update is called once per frame
@@ -63,7 +64,14 @@ public class playerMovement : MonoBehaviour {
 			isJump = false;
 			myRigidBody.velocity = new Vector2(0, jumpForce);
 		}
+		myAnim.SetFloat ("vVelocity", myRigidBody.velocity.y);
 
+	}
+
+	void OnCollisionEnter2D(Collision2D col){
+		if (col.gameObject.tag != "Finish") {
+			Destroy (col.gameObject);
+		}
 	}
 }
 
