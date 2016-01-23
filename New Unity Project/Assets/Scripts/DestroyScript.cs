@@ -3,11 +3,10 @@ using System.Collections;
 
 public class DestroyScript : MonoBehaviour {
 
-	public float destroyTime = 3.0f;
+	private float destroyTime = 7.0f;
 	// Use this for initialization
 	void Start () {
 		Destroy (gameObject, destroyTime);
-		RandomSpawn.numberObjects = RandomSpawn.numberObjects - 1;
 	
 	}
 	

@@ -7,16 +7,21 @@ public class playerMovement : MonoBehaviour {
 	private Rigidbody2D myRigidBody;
 
 	[SerializeField]
-	private float maxSpeed;
+	private float maxSpeed = 5;
 	[SerializeField]
-	private float acceleration;
+	private float acceleration = 0.3f;
 	[SerializeField]
-	private float jumpForce;
+	private float jumpForce = 5;
+
+	public Transform groundCheck;
+	public float groundCheckRadius;
+	public LayerMask whatIsGround;
+
 
 	private float currSpeed = 0;
-	private bool isGround = false;
-	private bool isJump = false;
-	
+	private bool isGround;
+	private bool isJump;
+
 
 	// Use this for initialization
 	void Start () {
@@ -26,25 +31,11 @@ public class playerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		float horizontal = Input.GetAxis ("Horizontal");
-		HandleInput ();
-
+		isGround = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatIsGround);
+		isJump = Input.GetKeyDown (KeyCode.Space);
 		HandleMovement (horizontal);
-
 	}
-
-	void OnCollisionEnter(Collision col){
-		Debug.Log (col.collider.name);
-		if(col.collider.name == "Bottom"){
-			isGround = true;
-			Debug.Log (isGround);
-		}
-	}
-
-	private void HandleInput(){
-		if (Input.GetKeyDown(KeyCode.Space)){
-			isJump = true;
-		}
-	}
+		
 
 	private void HandleMovement(float horizontal){
 		if (horizontal > 0) {
@@ -67,10 +58,10 @@ public class playerMovement : MonoBehaviour {
 				currSpeed = 0;
 				myRigidBody.velocity = new Vector2 (currSpeed, myRigidBody.velocity.y);	
 		}
-		if(isGround && isJump){
+		if(isJump && isGround){
 			isGround = false;
-			myRigidBody.AddForce(new Vector2(0, jumpForce));
-			Debug.Log("Jump!");
+			isJump = false;
+			myRigidBody.velocity = new Vector2(0, jumpForce);
 		}
 
 	}
